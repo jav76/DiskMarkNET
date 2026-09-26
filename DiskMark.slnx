@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DiskMark.Cli/DiskMark.Cli.csproj" />
+    <Project Path="src/DiskMark.Core/DiskMark.Core.csproj" />
+    <Project Path="src/DiskMark.Desktop/DiskMark.Desktop.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/DiskMark.Cli.Tests/DiskMark.Cli.Tests.csproj" />
+    <Project Path="tests/DiskMark.Core.Tests/DiskMark.Core.Tests.csproj" />
+    <Project Path="tests/DiskMark.Desktop.Tests/DiskMark.Desktop.Tests.csproj" />
+  </Folder>
+</Solution>

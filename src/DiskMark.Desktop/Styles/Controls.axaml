@@ -1,0 +1,90 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:DiskMark.Desktop.Controls">
+
+    <Style Selector="Border#RootBorder">
+        <Setter Property="Background" Value="{DynamicResource WindowSolidBrush}" />
+    </Style>
+    <Style Selector="Window.glass Border#RootBorder">
+        <Setter Property="Background" Value="{DynamicResource WindowGlassBrush}" />
+    </Style>
+
+    <Style Selector="Border.card">
+        <Setter Property="Background" Value="{DynamicResource CardBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource CardBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Padding" Value="14" />
+    </Style>
+
+    <Style Selector="TextBlock.muted">
+        <Setter Property="Foreground" Value="{DynamicResource MutedTextBrush}" />
+    </Style>
+    <Style Selector="TextBlock.caption">
+        <Setter Property="Foreground" Value="{DynamicResource MutedTextBrush}" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="TextBlock.warning">
+        <Setter Property="Foreground" Value="{DynamicResource WarningBrush}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style Selector="TextBlock.mono">
+        <Setter Property="FontFamily" Value="Cascadia Mono, Consolas, Menlo, DejaVu Sans Mono, monospace" />
+    </Style>
+
+    <!-- Score matrix cells -->
+    <Style Selector="Button.cell">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Right" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="14,10" />
+        <Setter Property="MinHeight" Value="64" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="FontSize" Value="26" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Background" Value="{DynamicResource CellBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource CardBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+    <Style Selector="Button.cell.read">
+        <Setter Property="Foreground" Value="{DynamicResource ReadBrush}" />
+    </Style>
+    <Style Selector="Button.cell.write">
+        <Setter Property="Foreground" Value="{DynamicResource WriteBrush}" />
+    </Style>
+    <Style Selector="Button.cell.active">
+        <Setter Property="Background" Value="{DynamicResource CellActiveBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+    </Style>
+    <Style Selector="Button.cell:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource CellActiveBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+    </Style>
+    <Style Selector="Button.cell.read:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource ReadBrush}" />
+    </Style>
+    <Style Selector="Button.cell.write:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Foreground" Value="{DynamicResource WriteBrush}" />
+    </Style>
+
+    <Style Selector="TabItem">
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="MinHeight" Value="36" />
+        <Setter Property="Padding" Value="10,0" />
+    </Style>
+
+    <Style Selector="controls|LatencyHistogramCanvas">
+        <Setter Property="BarBrush" Value="{DynamicResource HistogramBrush}" />
+        <Setter Property="MarkerBrush" Value="{DynamicResource MarkerBrush}" />
+        <Setter Property="TextBrush" Value="{DynamicResource ChartTextBrush}" />
+        <Setter Property="GridBrush" Value="{DynamicResource GridLineBrush}" />
+    </Style>
+    <Style Selector="controls|ThroughputSparklineCanvas">
+        <Setter Property="LineBrush" Value="{DynamicResource SparklineLineBrush}" />
+        <Setter Property="FillBrush" Value="{DynamicResource SparklineFillBrush}" />
+        <Setter Property="TextBrush" Value="{DynamicResource ChartTextBrush}" />
+        <Setter Property="GridBrush" Value="{DynamicResource GridLineBrush}" />
+    </Style>
+</Styles>

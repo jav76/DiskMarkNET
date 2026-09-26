@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>diskmark</AssemblyName>
+    <RootNamespace>DiskMark.Cli</RootNamespace>
+    <PublishAot>true</PublishAot>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DiskMark.Core\DiskMark.Core.csproj" />
+    <InternalsVisibleTo Include="DiskMark.Cli.Tests" />
+  </ItemGroup>
+
+</Project>

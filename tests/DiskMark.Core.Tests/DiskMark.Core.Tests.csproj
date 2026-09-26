@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\DiskMark.Core\DiskMark.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,58 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Dark">
+            <SolidColorBrush x:Key="WindowSolidBrush" Color="#0F1115" />
+            <SolidColorBrush x:Key="WindowGlassBrush" Color="#B80F1115" />
+            <SolidColorBrush x:Key="CardBrush" Color="#CC1A1D24" />
+            <SolidColorBrush x:Key="CardBorderBrush" Color="#2A2F3A" />
+            <SolidColorBrush x:Key="CellBrush" Color="#14171D" />
+            <SolidColorBrush x:Key="CellActiveBrush" Color="#1E2B45" />
+            <SolidColorBrush x:Key="AccentBrush" Color="#4F8CFF" />
+            <SolidColorBrush x:Key="ReadBrush" Color="#34D399" />
+            <SolidColorBrush x:Key="WriteBrush" Color="#FBBF24" />
+            <SolidColorBrush x:Key="MutedTextBrush" Color="#9AA3B2" />
+            <SolidColorBrush x:Key="WarningBrush" Color="#FBBF24" />
+            <SolidColorBrush x:Key="ErrorBrush" Color="#F87171" />
+            <SolidColorBrush x:Key="MarkerBrush" Color="#F472B6" />
+            <SolidColorBrush x:Key="ChartTextBrush" Color="#C9D1DC" />
+            <SolidColorBrush x:Key="GridLineBrush" Color="#2E3440" />
+            <LinearGradientBrush x:Key="HistogramBrush" StartPoint="0%,0%" EndPoint="0%,100%">
+                <GradientStop Offset="0" Color="#8B7CFF" />
+                <GradientStop Offset="1" Color="#3B82F6" />
+            </LinearGradientBrush>
+            <SolidColorBrush x:Key="SparklineLineBrush" Color="#4F8CFF" />
+            <LinearGradientBrush x:Key="SparklineFillBrush" StartPoint="0%,0%" EndPoint="0%,100%">
+                <GradientStop Offset="0" Color="#664F8CFF" />
+                <GradientStop Offset="1" Color="#004F8CFF" />
+            </LinearGradientBrush>
+        </ResourceDictionary>
+
+        <ResourceDictionary x:Key="Light">
+            <SolidColorBrush x:Key="WindowSolidBrush" Color="#F3F5F9" />
+            <SolidColorBrush x:Key="WindowGlassBrush" Color="#C8F3F5F9" />
+            <SolidColorBrush x:Key="CardBrush" Color="#E6FFFFFF" />
+            <SolidColorBrush x:Key="CardBorderBrush" Color="#DCE1EA" />
+            <SolidColorBrush x:Key="CellBrush" Color="#F7F8FB" />
+            <SolidColorBrush x:Key="CellActiveBrush" Color="#E3ECFF" />
+            <SolidColorBrush x:Key="AccentBrush" Color="#2563EB" />
+            <SolidColorBrush x:Key="ReadBrush" Color="#047857" />
+            <SolidColorBrush x:Key="WriteBrush" Color="#B45309" />
+            <SolidColorBrush x:Key="MutedTextBrush" Color="#5B6472" />
+            <SolidColorBrush x:Key="WarningBrush" Color="#B45309" />
+            <SolidColorBrush x:Key="ErrorBrush" Color="#DC2626" />
+            <SolidColorBrush x:Key="MarkerBrush" Color="#DB2777" />
+            <SolidColorBrush x:Key="ChartTextBrush" Color="#374151" />
+            <SolidColorBrush x:Key="GridLineBrush" Color="#E2E6EE" />
+            <LinearGradientBrush x:Key="HistogramBrush" StartPoint="0%,0%" EndPoint="0%,100%">
+                <GradientStop Offset="0" Color="#7C3AED" />
+                <GradientStop Offset="1" Color="#2563EB" />
+            </LinearGradientBrush>
+            <SolidColorBrush x:Key="SparklineLineBrush" Color="#2563EB" />
+            <LinearGradientBrush x:Key="SparklineFillBrush" StartPoint="0%,0%" EndPoint="0%,100%">
+                <GradientStop Offset="0" Color="#552563EB" />
+                <GradientStop Offset="1" Color="#002563EB" />
+            </LinearGradientBrush>
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+</ResourceDictionary>

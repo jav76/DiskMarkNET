@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsAotCompatible>true</IsAotCompatible>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>DiskMark.Core</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="DiskMark.Core.Tests" />
+  </ItemGroup>
+
+</Project>

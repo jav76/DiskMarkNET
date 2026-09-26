@@ -1,0 +1,84 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DiskMark.Desktop.ViewModels"
+             xmlns:controls="using:DiskMark.Desktop.Controls"
+             xmlns:common="clr-namespace:DiskMark.Core.Common;assembly=DiskMark.Core"
+             x:Class="DiskMark.Desktop.Views.DashboardTabs"
+             x:DataType="vm:MainViewModel">
+    <TabControl>
+        <TabItem Header="Latency">
+            <Grid RowDefinitions="Auto,*,Auto" Margin="8">
+                <ComboBox ItemsSource="{Binding CompletedResults}" SelectedItem="{Binding SelectedResult}"
+                          MinWidth="260" PlaceholderText="No completed tests yet">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="common:TestResult">
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <controls:LatencyHistogramCanvas Grid.Row="1" Margin="0,12,0,8" MinHeight="220"
+                                                 Buckets="{Binding SelectedResult.Histogram}"
+                                                 Latency="{Binding SelectedResult.Latency}" />
+                <TextBlock Grid.Row="2" Classes="muted mono" FontSize="12" TextWrapping="Wrap"
+                           Text="{Binding SelectedLatencyText}" />
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Percentiles">
+            <ScrollViewer Margin="8">
+                <StackPanel>
+                    <Grid ColumnDefinitions="130,60,*,*,*,*,*,*,*" Margin="0,0,0,6">
+                        <TextBlock Classes="caption" Text="TEST" />
+                        <TextBlock Grid.Column="1" Classes="caption" Text="MODE" />
+                        <TextBlock Grid.Column="2" Classes="caption" Text="MEAN µs" HorizontalAlignment="Right" />
+                        <TextBlock Grid.Column="3" Classes="caption" Text="P50" HorizontalAlignment="Right" />
+                        <TextBlock Grid.Column="4" Classes="caption" Text="P90" HorizontalAlignment="Right" />
+                        <TextBlock Grid.Column="5" Classes="caption" Text="P95" HorizontalAlignment="Right" />
+                        <TextBlock Grid.Column="6" Classes="caption" Text="P99" HorizontalAlignment="Right" />
+                        <TextBlock Grid.Column="7" Classes="caption" Text="P99.9" HorizontalAlignment="Right" />
+                        <TextBlock Grid.Column="8" Classes="caption" Text="MAX" HorizontalAlignment="Right" />
+                    </Grid>
+                    <ItemsControl ItemsSource="{Binding CompletedResults}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="common:TestResult">
+                                <Grid ColumnDefinitions="130,60,*,*,*,*,*,*,*" Margin="0,3">
+                                    <TextBlock Text="{Binding Spec.Name}" FontWeight="SemiBold" />
+                                    <TextBlock Grid.Column="1" Classes="muted" Text="{Binding Mode}" />
+                                    <TextBlock Grid.Column="2" Classes="mono" HorizontalAlignment="Right" Text="{Binding Latency.MeanUs, StringFormat={}{0:F2}}" />
+                                    <TextBlock Grid.Column="3" Classes="mono" HorizontalAlignment="Right" Text="{Binding Latency.P50Us, StringFormat={}{0:F2}}" />
+                                    <TextBlock Grid.Column="4" Classes="mono" HorizontalAlignment="Right" Text="{Binding Latency.P90Us, StringFormat={}{0:F2}}" />
+                                    <TextBlock Grid.Column="5" Classes="mono" HorizontalAlignment="Right" Text="{Binding Latency.P95Us, StringFormat={}{0:F2}}" />
+                                    <TextBlock Grid.Column="6" Classes="mono" HorizontalAlignment="Right" Text="{Binding Latency.P99Us, StringFormat={}{0:F2}}" />
+                                    <TextBlock Grid.Column="7" Classes="mono" HorizontalAlignment="Right" Text="{Binding Latency.P999Us, StringFormat={}{0:F2}}" />
+                                    <TextBlock Grid.Column="8" Classes="mono" HorizontalAlignment="Right" Text="{Binding Latency.MaxUs, StringFormat={}{0:F2}}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+
+        <TabItem Header="Throughput">
+            <Grid RowDefinitions="*,Auto" Margin="8">
+                <controls:ThroughputSparklineCanvas Samples="{Binding ThroughputSamples}" Capacity="300" MinHeight="200" />
+                <TextBlock Grid.Row="1" Classes="muted" Margin="0,8,0,0" Text="{Binding ThroughputSummary}" />
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Drive">
+            <ScrollViewer Margin="8">
+                <ItemsControl ItemsSource="{Binding Drive.Rows}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:DriveRow">
+                            <Grid ColumnDefinitions="140,*" Margin="0,4">
+                                <TextBlock Classes="caption" Text="{Binding Label}" VerticalAlignment="Center" />
+                                <SelectableTextBlock Grid.Column="1" Text="{Binding Value}" TextWrapping="Wrap" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </TabItem>
+    </TabControl>
+</UserControl>

@@ -1,0 +1,108 @@
+name: Release
+
+# Publishes Native AOT builds when a version tag (v1.2.3 or v1.2.3-beta.1) is pushed.
+# Binaries are not code signed: macOS needs `xattr -d com.apple.quarantine` and Windows shows SmartScreen.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  publish:
+    name: ${{ matrix.rid }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            rid: linux-x64
+          - os: ubuntu-24.04-arm
+            rid: linux-arm64
+          - os: windows-latest
+            rid: win-x64
+          - os: macos-latest
+            rid: osx-arm64
+          # Cross-compiled on Apple Silicon; not smoke tested.
+          - os: macos-latest
+            rid: osx-x64
+            cross: true
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      - name: Install Native AOT prerequisites
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y clang zlib1g-dev
+
+      - name: Publish Native AOT
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          dotnet publish src/DiskMark.Cli/DiskMark.Cli.csproj -c Release -r ${{ matrix.rid }} -o out/cli -p:Version="$version"
+          dotnet publish src/DiskMark.Desktop/DiskMark.Desktop.csproj -c Release -r ${{ matrix.rid }} -o out/desktop -p:Version="$version"
+          # Debug symbols stay out of the downloads.
+          find out \( -name '*.pdb' -o -name '*.dbg' -o -name '*.dSYM' \) -prune -exec rm -rf {} +
+
+      - name: CLI smoke test
+        if: ${{ !matrix.cross }}
+        run: |
+          smoke="$RUNNER_TEMP/diskmark-smoke"
+          mkdir -p "$smoke"
+          ./out/cli/diskmark run "$smoke" --size 64MiB --passes 1 --duration 1s --interval 0s
+
+      - name: Package
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          mkdir -p dist
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            (cd out/cli && 7z a -tzip "../../dist/diskmark-cli-$version-${{ matrix.rid }}.zip" . > /dev/null)
+            (cd out/desktop && 7z a -tzip "../../dist/DiskMarkNET-$version-${{ matrix.rid }}.zip" . > /dev/null)
+          else
+            tar -czf "dist/diskmark-cli-$version-${{ matrix.rid }}.tar.gz" -C out/cli .
+            tar -czf "dist/DiskMarkNET-$version-${{ matrix.rid }}.tar.gz" -C out/desktop .
+          fi
+          ls -la dist
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist-${{ matrix.rid }}
+          path: dist/*
+          if-no-files-found: error
+
+  release:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: dist-*
+          path: dist
+          merge-multiple: true
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          cd dist
+          sha256sum * > SHA256SUMS.txt
+          prerelease=""
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then prerelease="--prerelease"; fi
+          if ! gh release view "$GITHUB_REF_NAME" > /dev/null 2>&1; then
+            gh release create "$GITHUB_REF_NAME" --title "DiskMarkNET $GITHUB_REF_NAME" --generate-notes --verify-tag $prerelease
+          fi
+          gh release upload "$GITHUB_REF_NAME" * --clobber

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Headless.XUnit" />
+    <PackageReference Include="Avalonia.Skia" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\DiskMark.Desktop\DiskMark.Desktop.csproj" />
+  </ItemGroup>
+
+</Project>

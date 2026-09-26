@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build:
+    name: ${{ matrix.rid }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            rid: linux-x64
+          - os: ubuntu-24.04-arm
+            rid: linux-arm64
+          - os: windows-latest
+            rid: win-x64
+          - os: macos-latest
+            rid: osx-arm64
+    defaults:
+      run:
+        shell: bash
+    env:
+      # Runner temp directories are on real disks; /tmp can be RAM-backed.
+      DISKMARK_TEST_DIR: ${{ runner.temp }}/diskmark-tests
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      - name: Install Native AOT prerequisites
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y clang zlib1g-dev
+
+      - name: Build
+        run: dotnet build DiskMark.slnx -c Release
+
+      - name: Test
+        run: dotnet test --solution DiskMark.slnx -c Release --no-build
+
+      # TreatWarningsAsErrors turns any trim or AOT warning (IL2xxx/IL3xxx) into a failure here.
+      - name: Publish Native AOT
+        run: |
+          dotnet publish src/DiskMark.Cli/DiskMark.Cli.csproj -c Release -r ${{ matrix.rid }} -o artifacts/cli
+          dotnet publish src/DiskMark.Desktop/DiskMark.Desktop.csproj -c Release -r ${{ matrix.rid }} -o artifacts/desktop
+
+      - name: CLI smoke test
+        run: |
+          smoke="$RUNNER_TEMP/diskmark-smoke"
+          mkdir -p "$smoke"
+          ./artifacts/cli/diskmark --version
+          ./artifacts/cli/diskmark run "$smoke" --size 64MiB --passes 1 --duration 1s --interval 0s --json=smoke-${{ matrix.rid }}.json
+          if [ -n "$(ls -A "$smoke")" ]; then echo "Test file was not cleaned up"; ls -la "$smoke"; exit 1; fi
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: smoke-${{ matrix.rid }}
+          path: smoke-${{ matrix.rid }}.json
+          if-no-files-found: ignore
