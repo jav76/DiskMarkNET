@@ -32,9 +32,6 @@ jobs:
     defaults:
       run:
         shell: bash
-    env:
-      # Runner temp directories are on real disks; /tmp can be RAM-backed.
-      DISKMARK_TEST_DIR: ${{ runner.temp }}/diskmark-tests
     steps:
       - uses: actions/checkout@v7
 
@@ -50,6 +47,9 @@ jobs:
         run: dotnet build DiskMark.slnx -c Release
 
       - name: Test
+        env:
+          # Runner temp directories are on real disks; /tmp can be RAM-backed.
+          DISKMARK_TEST_DIR: ${{ runner.temp }}/diskmark-tests
         run: dotnet test --solution DiskMark.slnx -c Release --no-build
 
       # TreatWarningsAsErrors turns any trim or AOT warning (IL2xxx/IL3xxx) into a failure here.
