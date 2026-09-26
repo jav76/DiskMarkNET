@@ -81,7 +81,8 @@ public class DirectIoIntegrationTests
                 FileLength = file.Length,
                 Spec = spec,
                 Mode = mode,
-                Duration = TimeSpan.FromMilliseconds(300),
+                // Long enough that one storage stall on a shared CI VM cannot leave zero completed I/Os.
+                Duration = TimeSpan.FromMilliseconds(1500),
                 Alignment = file.Alignment,
                 Counters = counters,
             },
