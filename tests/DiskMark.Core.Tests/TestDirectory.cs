@@ -8,11 +8,16 @@ namespace DiskMark.Core.Tests;
 /// </summary>
 internal static class TestDirectory
 {
+    /// <summary>
+    /// Returns a fresh subdirectory per call. On Windows an open DeleteOnClose file stays visible until its handle
+    /// closes, so tests (and test projects running in parallel) must not share a directory for leftover checks.
+    /// </summary>
     public static string Get()
     {
-        string directory = Environment.GetEnvironmentVariable("DISKMARK_TEST_DIR") is { Length: > 0 } configured
+        string root = Environment.GetEnvironmentVariable("DISKMARK_TEST_DIR") is { Length: > 0 } configured
             ? configured
             : Path.Combine(FindRepositoryRoot(), ".testdata");
+        string directory = Path.Combine(root, "core-" + Guid.NewGuid().ToString("N")[..8]);
         Directory.CreateDirectory(directory);
         return directory;
     }

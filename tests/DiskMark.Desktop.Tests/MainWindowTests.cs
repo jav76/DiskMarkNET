@@ -39,6 +39,7 @@ public class MainWindowTests
         string directory = Environment.GetEnvironmentVariable("DISKMARK_TEST_DIR") is { Length: > 0 } configured
             ? configured
             : Path.Combine(FindRepositoryRoot(), ".testdata");
+        directory = Path.Combine(directory, "desktop-" + Guid.NewGuid().ToString("N")[..8]);
         Directory.CreateDirectory(directory);
         string frames = Path.Combine(AppContext.BaseDirectory, "frames");
         Directory.CreateDirectory(frames);
